@@ -14,7 +14,7 @@
 		};
 
 		changeDirection (keyCode) {
-			var { body:_body } = this, head = _body[0], neck = _body[1];
+			var _body = this.body, head = _body[0], neck = _body[1];
 
 			switch (keyCode) {
 				case 37:

@@ -145,15 +145,15 @@
 	function update (time = 0) {
 		delta = time - lastUpdate, lastUpdate = time;
 		
-
 		dropCounter += delta;
 		if (dropCounter >= dropInterval) {
 		
-			draw();
 
 			if (game.current === 'running') {
 				[food, snake].forEach(itens => itens.update());
 			};
+			
+			draw();
 
 			dropCounter = 0;
 		};
