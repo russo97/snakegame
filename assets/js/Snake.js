@@ -1,14 +1,14 @@
 
 
 	class Snake {
-		constructor (canvas, canvasContext, tileSize, Segment, gameController) {
+		constructor (canvasContext, tileSize, Segment, gameController) {
 			this.body           = [];
-			this.canvas         = canvas;
 			this.Segment        = Segment;
 			this.tileSize       = tileSize;
 			this.direction      = undefined;
+			this.canvasContext  = canvasContext;
 			this.gameController = gameController;
-			this.canvasContext  = canvasContext || this.canvas.getContext('2d');
+			this.canvas         = canvasContext.canvas;
 
 			this.restart();
 		};

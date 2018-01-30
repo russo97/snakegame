@@ -32,11 +32,15 @@
 			};
 		};
 
-		setPauseState () {
-			this.pause = !this.pause;
+		get paused () {
+			return this.pause;
 		};
 
-		over () {
+		togglePause () {
+			this.pause = !this.pause && !this.over;
+		};
+
+		get over () {
 			return this.score.weLose();
 		};
 	};

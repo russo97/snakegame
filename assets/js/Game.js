@@ -83,7 +83,7 @@
 		);
 
 		snake =	new Snake(
-			canvas, ctx, tileSize, new Segment(Sprites.snake, canvas), game
+			ctx, tileSize, new Segment(Sprites.snake, canvas), game
 		);
 
 		food  = new Food(
@@ -119,6 +119,16 @@
 	};
 
 
+	function verticalGradient (xGrad, yGrad, wGrad, hGrad, xCan, yCan, wCan, hCan, colorSet) {
+		var gradient = ctx.createLinearGradient(xGrad, yGrad, wGrad, hGrad);
+
+		gradient.addColorStop(0, colorSet.beg);
+		gradient.addColorStop(1, colorSet.end);
+
+		drawRect(xCan, yCan, wCan, hCan, gradient);
+	};
+
+
 	function loadImage (...files) {
 		for (var i = 0, len = files.length, images = []; i < len; i++) {
 			var image = new Image();
@@ -135,9 +145,17 @@
 
 		[maze, food, snake, game.score].forEach(itens => itens.draw());
 
-		if (game.over()) {
+		if (game.over) {
 			ctx.fillStyle = 'red';
 			ctx.fillText('perdeu', 100, 100);
+		};
+
+		if (game.paused) {
+			verticalGradient(0, 0, 0, canvas.height, 0, 0, canvas.width, canvas.height,
+				{ beg: 'rgba(0, 0, 0, .2)', end: 'rgba(0, 0, 0, .8)' }
+			);
+			ctx.fillStyle = 'red';
+			ctx.fillText('paused', 100, 100);
 		};
 	};
 
@@ -147,12 +165,12 @@
 		
 		dropCounter += delta;
 		if (dropCounter >= dropInterval) {
-		
 
 			if (game.current === 'running') {
-				[food, snake].forEach(itens => itens.update());
+				if (!game.paused)
+					[food, snake].forEach(itens => itens.update());
 			};
-			
+
 			draw();
 
 			dropCounter = 0;
@@ -163,7 +181,7 @@
 
 
 	function clickCanvas (event) {
-		game.setGameState();
+		// game.setGameState();
 	};
 
 
@@ -172,13 +190,13 @@
 
 		switch (keyCode) {
 			case 80: // P key
-				game.setPauseState();
+				game.togglePause();
 				break;
 			case 37:
 			case 38:
 			case 39:
 			case 40:
-				snake.changeDirection(keyCode);
+				(!game.over && !game.paused) && snake.changeDirection(keyCode);
 				break;
 		};
 	};
@@ -191,4 +209,5 @@
 
 
 	window.onload = createCanvas(480, 480);
+	console.log(ctx);
 } ());
