@@ -17,5 +17,13 @@
 				this.image, this.xImage, this.yImage, this.wImage, this.hImage, xCanvas, yCanvas, wCanvas, hCanvas
 			);
 		};
+
+		get width () {
+			return this.image.width;
+		};
+
+		get height () {
+			return this.image.height;
+		};
 	};
 

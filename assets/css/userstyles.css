@@ -50,7 +50,8 @@ canvas {
 	bottom: 0px;
 	margin: auto;
 	background-color: #fff;
-	box-shadow: 0 0 4px #aaa, 0 4px 4px #aaa;
+	border: 1px solid gray;
+	box-shadow: 0 0 10px #222, 0 8px 10px #222;
 }
 
 #menu #closeMenu {
@@ -69,44 +70,59 @@ canvas {
 
 #menu .conjunto {
 	width: 100%;
-	height: 150px;
-	display: block;
+	height: 100px;
 	position: absolute;
 	top: 0px;
 	left: 0px;
 	right: 0px;
 	bottom: 0px;
 	margin: auto;
+	display: block;
 	text-align: center;
 }
 
 .conjunto .row {
-	width: 100%;
+	width: 95%;
 	height: 50px;
 	line-height: 50px;
+	position: absolute;
+	top: auto;
+	left: 2.5%;
+}
+
+.row .columns {
+	width: 100%;
+	height: 50px;
+	position: relative;
+	/*background-color: red;*/
+}
+
+.columns .column {
+	width: 33.33%;
+	height: 100%;
+	float: left;
+	color: #fff;
 	display: inline-block;
 }
 
-.row select {
-	width: 200px;
-	height: 35px;
-	overflow: hidden;
-	font-family: 'Open Sans', sans-serif;
-	border: 1px solid #e0e0e0;
+.row .selection {
+	width: 33%;
+	height: 90%;
+	position: absolute;
+	top: 5%;
+	background: linear-gradient(45deg, rgba(255, 0, 0, .8), rgba(0, 0, 255, .8));
 }
 
-.row input[type="submit"] {
-	width: 200px;
-	height: 35px;
-	border: none;
-	color: #222;
-	font-size: 14pt;
-	font-family: 'Open Sans', sans-serif;
-	cursor: pointer;
+.level_1 {
+	left: 0px;
 }
 
-.row input[type="submit"]:hover {
-	background-color: #e0e0e0;
+.level_2 {
+	left: 33.33%;
+}
+
+.level_3 {
+	left: 66.66%;
 }
 
 #alerta {

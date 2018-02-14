@@ -36,8 +36,14 @@ class Segment {
 
 			var module = this.curve(node, beforeNode, afterNode, tileSize);
 
-			Sprites.curve[module].draw(node.x, node.y, tileSize, tileSize);
+			try {
+				Sprites.curve[module].draw(node.x, node.y, tileSize, tileSize);
+			} catch (e) {
+				let ctx = Sprites.body.vertical.canvasContext;
 
+				ctx.fillStyle = 'rgb(115, 182, 113)';
+				ctx.fillRect(node.x, node.y, tileSize, tileSize);
+			};
 		};
 	};
 
@@ -46,7 +52,7 @@ class Segment {
 			this.ULCurve(node, beforeNode, afterNode, tileSize) ? 'UL' :
 			this.URCurve(node, beforeNode, afterNode, tileSize) ? 'UR' :
 			this.DLCurve(node, beforeNode, afterNode, tileSize) ? 'DL' :
-			this.DRCurve(node, beforeNode, afterNode, tileSize) ? 'DR' : 'NO_MATCHES'
+			this.DRCurve(node, beforeNode, afterNode, tileSize) ? 'DR' : 0
 		);
 	};
 

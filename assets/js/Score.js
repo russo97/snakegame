@@ -36,12 +36,13 @@
 
 		changeStatus () {};
 
-		weLose () {
-			return !this.lifes;
+		get weLose () {
+			return this.lifes < 1;
 		};
 
 		reset () {
 			this.score = 0;
+			this.lifes = this.maxLifes;
 		};
 
 		draw (font) {

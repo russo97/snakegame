@@ -17,25 +17,14 @@
 			var _body = this.body, head = _body[0], neck = _body[1];
 
 			switch (keyCode) {
-				case 37:
-					if (head.y !== neck.y && this.direction != 'left') {
-						this.direction = 'left';
-					};
-					break;
 				case 38:
-					if (head.x !== neck.x && this.direction != 'up') {
-						this.direction = 'up';
-					};
-					break;
-				case 39:
-					if (head.y !== neck.y && this.direction != 'right') {
-						this.direction = 'right';
-					};
-					break;
+					return this.direction = (head.x !== neck.x && this.direction != 'up') ? 'up' : this.direction;
+				case 37:
+					return this.direction = (head.y !== neck.y && this.direction != 'left') ? 'left' : this.direction;
 				case 40:
-					if (head.x !== neck.x && this.direction != 'down') {
-						this.direction = 'down';
-					};
+					return this.direction = (head.x !== neck.x && this.direction != 'down') ? 'down' : this.direction;
+				case 39:
+					return this.direction = (head.y !== neck.y && this.direction != 'right') ? 'right' : this.direction;
 			};
 		};
 
@@ -60,13 +49,15 @@
 					newPiece.y = firstPiece.y == this.canvas.height - tileSize ? 0 : firstPiece.y + tileSize;
 			};
 
-			_body.splice(_body.length - 1, 1);
-			_body.unshift(newPiece);
+			var lastPiece = this.move(newPiece);
 
-			if (this.itCollide()) {
-				this.restart();
-
+			if (this.hasCollided()) {
 				this.gameController.score.decreaseLife();
+
+				if (this.gameController.over)
+					return this.stepBack(_body, lastPiece);
+
+				this.restart();
 			};
 		};
 
@@ -89,31 +80,40 @@
 			};
 		};
 
+		move (newPiece) {
+			var _body = this.body;
+
+			_body.unshift(newPiece);
+
+			return _body.splice(_body.length - 1, 1)[0];
+		};
+
 		ateFood () {
 			var tail = this.body[this.body.length - 1];
 
 			this.body.push({x: tail.x, y: tail.y});
 		};
 
-		itCollide (item) {
-			var head = this.body[0], currentMaze = this.gameController.maze;
+		hasCollided () {
+			var head = this.body[0], currentMaze = this.gameController.maze, _self = this;
 
-			return (
-				this.selfCollide(head) || currentMaze.collide(head)
-			);
+			return [_self, currentMaze].some(itens => itens.collide(head));
 		};
 
-		selfCollide (head) {
-			return this.body.some((_body, index) => index && head.x == _body.x && head.y == _body.y);
+		collide (head) {
+			return this.body.some((_body, index) => index && (head.x == _body.x && head.y == _body.y));
 		};
 
-		mazeCollide (maze) {};
+		stepBack (_body, lastPiece) {
+			_body.push(lastPiece);
+			_body.splice(0, 1);
+		};
 
 		restart () {
 			this.body = [
-				{x: 30, y: 280},
-				{x: 30, y: 290},
-				{x: 30, y: 300}
+				{ x: 30, y: 280 },
+				{ x: 30, y: 290 },
+				{ x: 30, y: 300 }
 			];
 
 			this.direction = 'up';

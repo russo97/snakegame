@@ -3,6 +3,7 @@
 	class Food {
 		constructor (Sprites, snake) {
 			this.maxFoods       = 2;
+			this.closer         = 0;
 			this.foods          = [];
 			this.snake          = snake;
 			this.Sprites        = Sprites;
@@ -32,6 +33,7 @@
 				var food = this.foods[i];
 
 				Sprites.apple.draw(food.x, food.y, tileSize, tileSize);
+				
 			};
 		};
 
@@ -41,7 +43,7 @@
 			var last_w = this.Sprites.apple.canvas.width - tileSize,
 				last_h = this.Sprites.apple.canvas.height - tileSize;
 
-			while ((!xPos || !yPos) || Food.foodCollide.call(this, { x: xPos, y: yPos })) {
+			while (!(xPos && yPos) || Food.foodCollide.call(this, { x: xPos, y: yPos })) {
 				xPos = Food.random(0, last_w, tileSize);
 				yPos = Food.random(0, last_h, tileSize);
 			};
@@ -56,6 +58,12 @@
 				snake.some(part => theFood.x === part.x && theFood.y === part.y) ||
 				foods.some(food => theFood.x === food.x && theFood.y === food.y) || maze.collide(theFood)
 			);
+		};
+
+		restart () {
+			this.foods = [];
+
+			while (this.foods.length < this.maxFoods) this.increaseFood();
 		};
 
 		static removeByIndex (removeList) {

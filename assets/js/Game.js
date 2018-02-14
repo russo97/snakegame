@@ -4,7 +4,9 @@
 
 	var dropCounter = 0, dropInterval = 110, lastUpdate = 0, delta;
 
-	var snake, food, maze, game, screens, maze, container = document.getElementById('container');
+	var snake, food, maze, game, screens, maze;
+
+	var container = document.getElementById('container'), menu = document.getElementById('menu'), menu_show = !1;
 
 
 	function createCanvas (w, h) {
@@ -73,13 +75,19 @@
 			heart: {
 				full:  new Sprite(heart_graphics, 0, 15, 97, 87),
 				empty: new Sprite(heart_graphics, 595, 15, 97, 87)
+			},
+
+			game: {
+				pause:  new Sprite(pause_graphics, 0, 0, 600, 600),
+				over:   new Sprite(over_graphics, 0, 0, 356, 91),
+				splash: new Sprite(splash_graphics, 0, 0, 216, 154)
 			}
 		};
 
 		maze = new mazeManager(allMazes, Sprites.wall, 0);
 
 		game  = new Controller(
-			new Score(Sprites.heart), new Screens(), maze
+			new Score(Sprites.heart), new Screens(Sprites.game, ctx), maze
 		);
 
 		snake =	new Snake(
@@ -119,13 +127,18 @@
 	};
 
 
-	function verticalGradient (xGrad, yGrad, wGrad, hGrad, xCan, yCan, wCan, hCan, colorSet) {
+	function verticalGradient (xGrad, yGrad, wGrad, hGrad, colorSet) {
 		var gradient = ctx.createLinearGradient(xGrad, yGrad, wGrad, hGrad);
 
 		gradient.addColorStop(0, colorSet.beg);
 		gradient.addColorStop(1, colorSet.end);
 
-		drawRect(xCan, yCan, wCan, hCan, gradient);
+		return gradient;
+	};
+
+
+	function fillBackground (scheme = 'white') {
+		drawRect(0, 0, canvas.width, canvas.height, scheme);
 	};
 
 
@@ -143,19 +156,14 @@
 	function draw () {
 		clearCanvas();
 
-		[maze, food, snake, game.score].forEach(itens => itens.draw());
+		var grad = verticalGradient(0, 0, 0, canvas.height, { beg: 'rgba(0, 0, 0, .2)', end: 'rgba(0, 0, 0, .8)' });
 
-		if (game.over) {
-			ctx.fillStyle = 'red';
-			ctx.fillText('perdeu', 100, 100);
-		};
+		game.running ? [maze, food, snake, game.score].forEach(itens => itens.draw()) : game.screens.splash();
 
-		if (game.paused) {
-			verticalGradient(0, 0, 0, canvas.height, 0, 0, canvas.width, canvas.height,
-				{ beg: 'rgba(0, 0, 0, .2)', end: 'rgba(0, 0, 0, .8)' }
-			);
-			ctx.fillStyle = 'red';
-			ctx.fillText('paused', 100, 100);
+		if (game.paused || game.over) {
+			drawRect(0, 0, canvas.width, canvas.height, grad);
+
+			game.draw();
 		};
 	};
 
@@ -166,9 +174,8 @@
 		dropCounter += delta;
 		if (dropCounter >= dropInterval) {
 
-			if (game.current === 'running') {
-				if (!game.paused)
-					[food, snake].forEach(itens => itens.update());
+			if (game.running) {
+				!(game.paused || game.over) && [food, snake].forEach(itens => itens.update());
 			};
 
 			draw();
@@ -180,8 +187,27 @@
 	};
 
 
+	function toggleMenu () {
+		menu_show = !menu_show;
+
+		if (menu_show) {
+			menu.style.zIndex = 9999;
+		} else {
+			menu.style.zIndex = 0;
+		};
+	};
+
+
+	function resetGame () {
+		[game, snake, food].forEach(itens => itens.restart());
+	};
+
+
 	function clickCanvas (event) {
-		// game.setGameState();
+		if (game.over)
+			return resetGame();
+
+		game.setGameState();
 	};
 
 
@@ -191,13 +217,19 @@
 		switch (keyCode) {
 			case 80: // P key
 				game.togglePause();
+				if (!game.paused && menu_show) {
+					toggleMenu();
+				};
 				break;
+			case 77: // M key
+				return game.paused && toggleMenu();
+			case 32:
+				return !game.running && !game.paused && game.setGameState();
 			case 37:
 			case 38:
 			case 39:
 			case 40:
-				(!game.over && !game.paused) && snake.changeDirection(keyCode);
-				break;
+				return (!game.over && !game.paused && game.running) && snake.changeDirection(keyCode);
 		};
 	};
 
@@ -209,5 +241,4 @@
 
 
 	window.onload = createCanvas(480, 480);
-	console.log(ctx);
 } ());

@@ -8,28 +8,31 @@
 			this.pause   = false;
 			this.score   = score;
 			this.screens = screens;
-			this.current = 'running';
-			this.states  = [
-				'running',
-				'splash',
-				'record',
-				'over'
-			];
+			this.current = 'splash';
+			this.record  = new Record();
 		};
 
-		draw () {};
+		draw () {
+			var currentState = this.over ? 'over' : this.paused ? 'pause' : false;
+
+			if (currentState) {
+				try {
+					this.screens[currentState]();
+
+					this.over && this.record.draw(this.maze.Sprites.white.canvasContext);
+				} catch (e) {};
+			};
+		};
 
 		setGameState () {
 			switch (this.current) {
 				case 'splash':
 					this.current = 'running';
-					break;
-				case 'record':
-					this.current = 'over';
-					break;
-				case 'over':
-					this.current = 'splash';
 			};
+		};
+
+		get running () {
+			return this.current === 'running';
 		};
 
 		get paused () {
@@ -37,27 +40,18 @@
 		};
 
 		togglePause () {
-			this.pause = !this.pause && !this.over;
+			this.pause = !this.pause && !this.over && this.running;
 		};
 
 		get over () {
-			return this.score.weLose();
+			return this.score.weLose;
+		};
+
+		restart () {
+			this.score.reset();
+			this.current = 'splash';
 		};
 	};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
