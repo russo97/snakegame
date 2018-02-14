@@ -13,9 +13,9 @@
 		draw (ctx) {
 			var record = JSON.parse(this.records), { width:w, height:h } = ctx.canvas, box_w = 220, box_h = 120;
 
-			if (this.hasAnRecord) {
+			// if (this.hasAnRecord) {
 				return this.noRecords(ctx);
-			};
+			// };
 
 			ctx.fillStyle = `rgba(0, 0, 255, .9)`;
 			ctx.fillRect((w - box_w) * .5, (h - box_h) * .85, box_w, box_h);
