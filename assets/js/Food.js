@@ -3,7 +3,6 @@
 	class Food {
 		constructor (Sprites, snake) {
 			this.maxFoods       = 2;
-			this.closer         = 0;
 			this.foods          = [];
 			this.snake          = snake;
 			this.Sprites        = Sprites;
@@ -13,12 +12,12 @@
 		};
 
 		update () {
-			var snake_head = this.snake.body[0], collideIndex, removeIndex = [];
+			var snake_head = this.snake.body[0], removeIndex = [];
 
 			this.foods.forEach((food, index) => {
-				collideIndex = (food.x == snake_head.x && food.y == snake_head.y) && index;
-
-				typeof collideIndex === 'number' && removeIndex.push(collideIndex);
+				if (food.x == snake_head.x && food.y == snake_head.y) {
+					removeIndex.push(index);
+				};
 			});
 
 			removeIndex.length && Food.removeByIndex.call(this, removeIndex);
@@ -33,7 +32,6 @@
 				var food = this.foods[i];
 
 				Sprites.apple.draw(food.x, food.y, tileSize, tileSize);
-				
 			};
 		};
 

@@ -3,36 +3,30 @@
 
 	class Record {
 		constructor () {
-			this.records = localStorage.getItem('snakeRecord');
+			this.record    = localStorage.getItem('snakeRecord');
+			this.newRecord = {
+				added: 0
+			};
 		};
 
 		get hasAnRecord () {
-			return this.records;
+			return this.record;
 		};
 
-		draw (ctx) {
-			if (!this.hasAnRecord) {
-				return this.noRecords(ctx);
-			};
+		updateRecord (record) {
+			this.record = record;
 
-			var record = JSON.parse(this.records), { width:w, height:h } = ctx.canvas, box_w = 220, box_h = 120;
-
-			ctx.fillStyle = `rgba(0, 0, 255, .9)`;
-			ctx.fillRect((w - box_w) * .5, (h - box_h) * .85, box_w, box_h);
+			localStorage.setItem('snakeRecord', record);
 		};
 
-		noRecords (ctx) {
-			var { width:w, height:h } = ctx.canvas;
-
-			ctx.fillStyle = '#fff';
-			ctx.font = '18pt Reenie Beanie';
-			ctx.fillText('Nenhum recorde anterior', w * .31, h * .76);
+		overcame (score) {
+			return !this.record || score > JSON.parse(this.record).score;
 		};
 
-		setNewRecord (name, score, level) {
-			var storage = JSON.stringify({ name: name, score: score, level: level });
+		setNewRecord (name, score) {
+			var storage = { name: name, score: score };
 
-			localStorage.setItem('snakeRecord', storage);
+			this.updateRecord(JSON.stringify(storage));
 		};
 	};
 

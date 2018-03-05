@@ -6,7 +6,7 @@
 			this.mazes     = mazes;
 			this.stage     = stage;
 			this.Sprites   = Sprites;
-			this.wallExist = (row) => /[123]/g.test(row.join('')); // row should be an array
+			this.wallExist = (row) => /[^0]/g.test(row.join('')); // row should be an array
 		};
 
 		draw () {
@@ -52,7 +52,7 @@
 			for (var i = 0, len = str_maze.length; i < len; i++) {
 				var row = str_maze[i];
 
-				if (/[123]/g.test(row)) {
+				if (/[^0]/g.test(row)) {
 
 					if (isNaN(first)) {
 						first = i;
@@ -71,7 +71,7 @@
 			for (var i = 0, len = row.length; i < len; i++) {
 				var char = row[i];
 
-				if (/[123]/g.test(char)) {
+				if (/[^0]/g.test(char)) {
 
 					if (isNaN(first)) {
 						first = i;

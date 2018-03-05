@@ -22,26 +22,36 @@
 			this.showTime++;
 
 			if (this.showTime > 10) {
-				return this.showTime = this.showTime > 20 ? 0 : this.showTime++;
+				return this.showTime = this.showTime > 20 ? 0 : this.showTime;
 			};
 
 			ctx.fillStyle = '#000';
+			ctx.textAlign = 'center';
 			ctx.font = '20pt Reenie Beanie';
-			ctx.fillText('Clique ou pressione ESPACE para iniciar', wCanvas * .13, hCanvas * .78);
+			ctx.fillText('Clique ou pressione ESPACE para iniciar', wCanvas * .5, hCanvas * .78);
 		};
 
 		noRecord () {
 			var ctx     = this.canvasContext,
 				canvas  = ctx.canvas,
-				Sprites = this.Sprites,
 				wCanvas = canvas.width,
-				hCanvas = canvas.height,
-				wImage  = Sprites.over.width,
-				hImage  = Sprites.over.height;
+				hCanvas = canvas.height;
 
 			ctx.fillStyle = '#fff';
-			ctx.font = '20pt Reenie Beanie';
-			ctx.fillText('Ainda não existem records', wCanvas * .26, hCanvas * .78);
+			ctx.font = '18pt Reenie Beanie';
+			ctx.fillText(' Nenhum recorde anterior', wCanvas * .5, hCanvas * .76);
+		};
+
+		drawRecord (record) {
+			var ctx     = this.canvasContext,
+				canvas  = ctx.canvas,
+				Sprites = this.Sprites,
+				wCanvas = canvas.width,
+				hCanvas = canvas.height;
+
+			ctx.fillStyle = '#fff';
+			ctx.font = '18pt Contrail One';
+			ctx.fillText('último recorde', wCanvas * .5, hCanvas * .76);
 		};
 
 		pause () {
@@ -51,7 +61,7 @@
 
 			ctx.fillStyle = '#fff';
 			ctx.font = '10pt Consolas';
-			ctx.fillText('Pressione P para continuar', canvas.width * .31, canvas.height * .97);
+			ctx.fillText('Pressione P para continuar', canvas.width * .5, canvas.height * .97);
 		};
 
 		over () {

@@ -54,9 +54,11 @@
 				heart.draw(405 + (16 * i), 15, tileSize + 4, tileSize + 4);
 			};
 
+			let espacamento = this.score > 100 ? 1 : this.score > 995 ? 2 : this.score > 9995 ? 3 : this.score > 99995 ? 4 : 0;
+
 			ctx.fillStyle = 'gray';
 			ctx.font = '14pt Contrail One';
-			ctx.fillText('$ ' + this.score, 15, 30);
+			ctx.fillText('$ ' + this.score, 30 + (espacamento * 5), 30);
 		};
 	};
 
