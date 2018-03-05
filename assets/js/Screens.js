@@ -52,6 +52,9 @@
 			ctx.fillStyle = '#fff';
 			ctx.font = '18pt Contrail One';
 			ctx.fillText('último recorde', wCanvas * .5, hCanvas * .76);
+
+			ctx.font = '24pt Reenie Beanie';
+			ctx.fillText(`${record.name}`, wCanvas * .5, hCanvas * .84);
 		};
 
 		pause () {
