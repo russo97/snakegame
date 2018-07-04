@@ -34,7 +34,7 @@ class Segment {
 			Sprites.body.vertical.draw(node.x, node.y, tileSize, tileSize);
 		} else {
 
-			var module = this.curve(node, beforeNode, afterNode, tileSize);
+			let module = this.curve(node, beforeNode, afterNode, tileSize);
 
 			try {
 				Sprites.curve[module].draw(node.x, node.y, tileSize, tileSize);

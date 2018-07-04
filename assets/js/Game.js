@@ -2,11 +2,11 @@
 
 	var canvas, ctx, tileSize = 10, Sprites;
 
-	var dropCounter = 0, dropInterval = 110, lastUpdate = 0, delta;
+	var container = document.getElementById('container');
 
 	var snake, food, maze, game, screens, maze;
 
-	var container = document.getElementById('container'), menu = document.getElementById('menu'), menu_show = !1;
+	var dropCounter = 0, dropInterval = 100, lastUpdate = 0, delta;
 
 
 	function createCanvas (w, h) {
@@ -156,11 +156,11 @@
 	function draw () {
 		clearCanvas();
 
-		var grad = verticalGradient(0, 0, 0, canvas.height, { beg: 'rgba(0, 0, 0, .2)', end: 'rgba(0, 0, 0, .8)' });
-
 		game.running ? [maze, food, snake, game.score].forEach(itens => itens.draw()) : game.screens.splash();
 
 		if (game.paused || game.over) {
+			var grad = verticalGradient(0, 0, 0, canvas.height, { beg: 'rgba(0, 0, 0, .2)', end: 'rgba(0, 0, 0, .8)' });
+
 			drawRect(0, 0, canvas.width, canvas.height, grad);
 
 			game.draw();
@@ -187,17 +187,6 @@
 	};
 
 
-	function toggleMenu () {
-		menu_show = !menu_show;
-
-		if (menu_show) {
-			menu.style.zIndex = 9999;
-		} else {
-			menu.style.zIndex = 0;
-		};
-	};
-
-
 	function resetGame () {
 		[game, snake, food].forEach(itens => itens.restart());
 	};
@@ -217,12 +206,7 @@
 		switch (keyCode) {
 			case 80: // P key
 				game.togglePause();
-				if (!game.paused && menu_show) {
-					toggleMenu();
-				};
 				break;
-			case 77: // M key
-				return game.paused && toggleMenu();
 			case 32:
 				return !game.running && !game.paused && game.setGameState();
 			case 37:

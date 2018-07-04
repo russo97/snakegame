@@ -18,13 +18,17 @@
 
 			switch (keyCode) {
 				case 38:
-					return this.direction = (head.x !== neck.x && this.direction != 'up') ? 'up' : this.direction;
+					this.direction = (head.x !== neck.x && this.direction != 'up') ? 'up' : this.direction;
+					break;
 				case 37:
-					return this.direction = (head.y !== neck.y && this.direction != 'left') ? 'left' : this.direction;
+					this.direction = (head.y !== neck.y && this.direction != 'left') ? 'left' : this.direction;
+					break;
 				case 40:
-					return this.direction = (head.x !== neck.x && this.direction != 'down') ? 'down' : this.direction;
+					this.direction = (head.x !== neck.x && this.direction != 'down') ? 'down' : this.direction;
+					break;
 				case 39:
-					return this.direction = (head.y !== neck.y && this.direction != 'right') ? 'right' : this.direction;
+					this.direction = (head.y !== neck.y && this.direction != 'right') ? 'right' : this.direction;
+					break;
 			};
 		};
 
@@ -54,8 +58,14 @@
 			if (this.hasCollided()) {
 				this.gameController.score.decreaseLife();
 
-				if (this.gameController.over)
-					return this.stepBack(_body, lastPiece);
+				if (this.gameController.over) {
+					this.stepBack(_body, lastPiece);
+
+					if (this.doubleTile()) {
+						// morreu enquanto comia uma fruta
+						return this.body.pop();
+					};
+				};
 
 				this.restart();
 			};
@@ -92,6 +102,15 @@
 			var tail = this.body[this.body.length - 1];
 
 			this.body.push({x: tail.x, y: tail.y});
+		};
+
+		doubleTile () {
+			let tile       = this.body[this.body.length - 1],
+				beforeTile = this.body[this.body.length - 2];
+
+			return (
+				tile.x == beforeTile.x && tile.y == beforeTile.y
+			);
 		};
 
 		hasCollided () {
