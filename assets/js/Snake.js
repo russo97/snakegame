@@ -11,26 +11,41 @@
 			this.canvas         = canvasContext.canvas;
 
 			this.restart();
-		};
+		}
 
 		changeDirection (keyCode) {
 			var _body = this.body, head = _body[0], neck = _body[1];
 
+			let newDirection = {
+				38: 'up',
+				37: 'left',
+				40: 'down',
+				39: 'right'
+			}[keyCode], currentDirection = this.direction;
+
 			switch (keyCode) {
 				case 38:
-					this.direction = (head.x !== neck.x && this.direction != 'up') ? 'up' : this.direction;
+					if (head.x !== neck.x && currentDirection != 'down') {
+						this.direction = newDirection;
+					}
 					break;
 				case 37:
-					this.direction = (head.y !== neck.y && this.direction != 'left') ? 'left' : this.direction;
+					if (head.y !== neck.y && currentDirection != 'right') {
+						this.direction = newDirection;
+					}
 					break;
 				case 40:
-					this.direction = (head.x !== neck.x && this.direction != 'down') ? 'down' : this.direction;
+					if (head.x !== neck.x && currentDirection != 'up') {
+						this.direction = newDirection;
+					}
 					break;
 				case 39:
-					this.direction = (head.y !== neck.y && this.direction != 'right') ? 'right' : this.direction;
+					if (head.y !== neck.y && currentDirection != 'left') {
+						this.direction = newDirection;
+					}
 					break;
-			};
-		};
+			}
+		}
 
 		update () {
 			var _body = this.body, firstPiece = _body[0], newPiece = {}, tileSize = this.tileSize;
@@ -51,7 +66,7 @@
 				case 'down':
 					newPiece.x = firstPiece.x;
 					newPiece.y = firstPiece.y == this.canvas.height - tileSize ? 0 : firstPiece.y + tileSize;
-			};
+			}
 
 			var lastPiece = this.move(newPiece);
 
@@ -64,12 +79,14 @@
 					if (this.doubleTile()) {
 						// morreu enquanto comia uma fruta
 						return this.body.pop();
-					};
-				};
+					}
+
+					return;
+				}
 
 				this.restart();
-			};
-		};
+			}
+		}
 
 		draw () {
 			var { body:_body, Segment:Segment } = this;
@@ -86,9 +103,9 @@
 						break;
 					default:
 						Segment.body(_piece, _body[i - 1], _body[i + 1]);
-				};
-			};
-		};
+				}
+			}
+		}
 
 		move (newPiece) {
 			var _body = this.body;
@@ -96,37 +113,35 @@
 			_body.unshift(newPiece);
 
 			return _body.splice(_body.length - 1, 1)[0];
-		};
+		}
 
 		ateFood () {
 			var tail = this.body[this.body.length - 1];
 
 			this.body.push({x: tail.x, y: tail.y});
-		};
+		}
 
 		doubleTile () {
 			let tile       = this.body[this.body.length - 1],
 				beforeTile = this.body[this.body.length - 2];
 
-			return (
-				tile.x == beforeTile.x && tile.y == beforeTile.y
-			);
-		};
+			return (tile.x == beforeTile.x && tile.y == beforeTile.y);
+		}
 
 		hasCollided () {
 			var head = this.body[0], currentMaze = this.gameController.maze, _self = this;
 
 			return [_self, currentMaze].some(itens => itens.collide(head));
-		};
+		}
 
 		collide (head) {
 			return this.body.some((_body, index) => index && (head.x == _body.x && head.y == _body.y));
-		};
+		}
 
 		stepBack (_body, lastPiece) {
 			_body.push(lastPiece);
 			_body.splice(0, 1);
-		};
+		}
 
 		restart () {
 			this.body = [
@@ -136,6 +151,6 @@
 			];
 
 			this.direction = 'up';
-		};
-	};
+		}
+	}
 

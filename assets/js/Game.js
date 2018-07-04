@@ -26,16 +26,11 @@
 		setSprites();
 
 		requestAnimationFrame(update, canvas);
-	};
+	}
 
 
 	function setSprites () {
 		Sprites = {
-			game: {
-				splash: new Sprite(),
-				over  : new Sprite()
-			},
-
 			snake: {
 				head: {
 					up:    new Sprite(snake_graphics, 193, 1, 61, 61),
@@ -78,43 +73,43 @@
 			},
 
 			game: {
-				pause:  new Sprite(pause_graphics, 0, 0, 600, 600),
-				over:   new Sprite(over_graphics, 0, 0, 356, 91),
-				splash: new Sprite(splash_graphics, 0, 0, 216, 154)
+				pause:  new Sprite(pause_graphics, 0, 0, 600, 600, tileSize),
+				over:   new Sprite(over_graphics, 0, 0, 356, 91, tileSize),
+				splash: new Sprite(splash_graphics, 0, 0, 216, 154, tileSize)
 			}
 		};
 
-		maze = new mazeManager(allMazes, Sprites.wall, 0);
+		maze = new mazeManager(allMazes, Sprites.wall);
 
 		game  = new Controller(
 			new Score(Sprites.heart), new Screens(Sprites.game, ctx), maze
 		);
 
 		snake =	new Snake(
-			ctx, tileSize, new Segment(Sprites.snake, canvas), game
+			ctx, tileSize, new Segment(Sprites.snake), game
 		);
 
 		food  = new Food(
 			Sprites.food, snake
 		);
-	};
+	}
 
 
 	function random (min, max) {
 		return Math.floor(Math.random() * (max - min + 1) + min);
-	};
+	}
 
 
 	function clearCanvas (newColor = 'white') {
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		drawRect(0, 0, canvas.width, canvas.height, newColor);
-	};
+	}
 
 
 	function drawRect (x, y, w, h, color) {
 		ctx.fillStyle = color;
 		ctx.fillRect(x, y, w, h);
-	};
+	}
 
 
 	function drawArc (x, y, r, color) {
@@ -124,7 +119,7 @@
 		ctx.arc(x, y, r, 0, Math.PI * 2);
 		ctx.closePath();
 		ctx.stroke();
-	};
+	}
 
 
 	function verticalGradient (xGrad, yGrad, wGrad, hGrad, colorSet) {
@@ -134,12 +129,12 @@
 		gradient.addColorStop(1, colorSet.end);
 
 		return gradient;
-	};
+	}
 
 
 	function fillBackground (scheme = 'white') {
 		drawRect(0, 0, canvas.width, canvas.height, scheme);
-	};
+	}
 
 
 	function loadImage (...files) {
@@ -147,10 +142,10 @@
 			var image = new Image();
 			image.src = files[i];
 			images.push(image);
-		};
+		}
 		
 		return images;
-	};
+	}
 
 
 	function draw () {
@@ -164,8 +159,8 @@
 			drawRect(0, 0, canvas.width, canvas.height, grad);
 
 			game.draw();
-		};
-	};
+		}
+	}
 
 
 	function update (time = 0) {
@@ -176,28 +171,29 @@
 
 			if (game.running) {
 				!(game.paused || game.over) && [food, snake].forEach(itens => itens.update());
-			};
+			}
 
 			draw();
 
 			dropCounter = 0;
-		};
+		}
 
 		requestAnimationFrame(update, canvas);
-	};
+	}
 
 
 	function resetGame () {
 		[game, snake, food].forEach(itens => itens.restart());
-	};
+	}
 
 
 	function clickCanvas (event) {
-		if (game.over)
+		if (game.over) {
 			return resetGame();
+		}
 
 		game.setGameState();
-	};
+	}
 
 
 	function keydownCanvas (event) {
@@ -214,14 +210,14 @@
 			case 39:
 			case 40:
 				return (!game.over && !game.paused && game.running) && snake.changeDirection(keyCode);
-		};
-	};
+		}
+	}
 
 
 	function setInputs () {
 		canvas.addEventListener('click', clickCanvas, false);
 		document.addEventListener('keydown', keydownCanvas, false);
-	};
+	}
 
 
 	window.onload = createCanvas(480, 480);

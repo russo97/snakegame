@@ -2,12 +2,12 @@
 
 
 	class mazeManager {
-		constructor (mazes, Sprites, stage) {
+		constructor (mazes, Sprites) {
+			this.stage     = 0;
 			this.mazes     = mazes;
-			this.stage     = stage;
 			this.Sprites   = Sprites;
 			this.wallExist = (row) => /[^0]/g.test(row.join('')); // row should be an array
-		};
+		}
 
 		draw () {
 			var Sprites     = this.Sprites,
@@ -29,13 +29,13 @@
 						case 3:
 							Sprites.white.draw(j * tileSize, i * tileSize, tileSize, tileSize);
 							break;
-					};
-				};
-			};
-		};
+					}
+				}
+			}
+		}
 
 		collide (item) {
-			var currentMaze = this.mazes[this.stage], Sprites = this.Sprites, tileSize = Sprites.white.tileSize;
+			var currentMaze = this.mazes[this.stage], tileSize = this.Sprites.white.tileSize;
 
 			return (
 				currentMaze.some((row, y) =>
@@ -44,7 +44,7 @@
 					)
 				)
 			);
-		};
+		}
 
 		static getInnerRow (currentMaze) {
 			var str_maze = currentMaze.join('|').split('|'), first, last;
@@ -56,14 +56,14 @@
 
 					if (isNaN(first)) {
 						first = i;
-					};
+					}
 
 					last = i;
-				};
-			};
+				}
+			}
 
 			return { begin: first, end: ++last };
-		};
+		}
 
 		static getInnerLine (row) {
 			var first, last;
@@ -75,15 +75,15 @@
 
 					if (isNaN(first)) {
 						first = i;
-					};
+					}
 
 					last = i;
-				};
-			};
+				}
+			}
 
 			return { begin: first, end: ++last };
-		};
-	};
+		}
+	}
 
 
 

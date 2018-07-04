@@ -2,10 +2,10 @@
 
 
 class Segment {
-	constructor (Sprites, canvas) {
-		this.canvas  = canvas;
+	constructor (Sprites) {
 		this.sprites = Sprites;
-	};
+		this.canvas  = Sprites.head.up.canvas;
+	}
 
 	head (head, neck) {
 		var Sprites = this.sprites.head, tileSize = Sprites.up.tileSize, last_w = this.canvas.width - tileSize, last_h = this.canvas.height - tileSize;
@@ -21,16 +21,15 @@ class Segment {
 		} else
 		if ((head.y == neck.y + tileSize || neck.y == last_h && !head.y) && head.x == neck.x) {
 			Sprites.down.draw(head.x, head.y, tileSize, tileSize);
-		};
-	};
+		}
+	}
 
 	body (node, beforeNode, afterNode) {
 		var Sprites = this.sprites, tileSize = Sprites.body.vertical.tileSize, wCanvas = this.canvas.width, hCanvas = this.canvas.height;
 
 		if (this.horizontal(node, beforeNode, afterNode, tileSize)) {
 			Sprites.body.horizontal.draw(node.x, node.y, tileSize, tileSize);
-		} else
-		if (this.vertical(node, beforeNode, afterNode, tileSize)) {
+		} else if (this.vertical(node, beforeNode, afterNode, tileSize)) {
 			Sprites.body.vertical.draw(node.x, node.y, tileSize, tileSize);
 		} else {
 
@@ -41,20 +40,22 @@ class Segment {
 			} catch (e) {
 				let ctx = Sprites.body.vertical.canvasContext;
 
+				console.error(module);
+
 				ctx.fillStyle = 'rgb(115, 182, 113)';
 				ctx.fillRect(node.x, node.y, tileSize, tileSize);
-			};
-		};
-	};
+			}
+		}
+	}
 
 	curve (node, beforeNode, afterNode, tileSize) {
 		return (
 			this.ULCurve(node, beforeNode, afterNode, tileSize) ? 'UL' :
 			this.URCurve(node, beforeNode, afterNode, tileSize) ? 'UR' :
 			this.DLCurve(node, beforeNode, afterNode, tileSize) ? 'DL' :
-			this.DRCurve(node, beforeNode, afterNode, tileSize) ? 'DR' : 0
+			this.DRCurve(node, beforeNode, afterNode, tileSize) ? 'DR' : 'CANNOT_FIND_NODE'
 		);
-	};
+	}
 
 	ULCurve (node, before, after, tileSize) {
 		var last_w = this.canvas.width - tileSize, last_h = this.canvas.height - tileSize;
@@ -69,7 +70,7 @@ class Segment {
 			(!node.x && !node.y && !after.y && !before.x && after.x == last_w && before.y == last_h) ||
 			(!node.x && !node.y && !after.x && !before.y && after.y == last_h && before.x == last_w)
 		);
-	};
+	}
 
 	URCurve (node, before, after, tileSize) {
 		var last_w = this.canvas.width - tileSize, last_h = this.canvas.height - tileSize;
@@ -84,7 +85,7 @@ class Segment {
 			(!node.y && !after.x && !after.y && node.x == last_w && node.x == before.x && before.y == last_h) ||
 			(!node.y && !before.y && !before.y && node.x == last_w && node.x == after.x && after.y == last_h)
 		);
-	};
+	}
 
 	DLCurve (node, before, after, tileSize) {
 		var last_w = this.canvas.width - tileSize, last_h = this.canvas.height - tileSize;
@@ -99,7 +100,7 @@ class Segment {
 			(!node.x && !before.x && !before.y && node.y == last_h && node.y == after.y && after.x == last_w) ||
 			(!node.x && !after.x && !after.y && node.y == last_h && node.y == before.y && before.x == last_w)
 		);
-	};
+	}
 
 	DRCurve (node, before, after, tileSize) {
 		var last_w = this.canvas.width - tileSize, last_h = this.canvas.height - tileSize;
@@ -114,7 +115,7 @@ class Segment {
 			(!after.x && !before.y && node.x == last_w && node.y == last_h && node.x == before.x && node.y == after.y) ||
 			(!before.x && !after.y && node.x == last_w && node.y == last_h && node.x == after.x && node.y == before.y)
 		);
-	};
+	}
 
 	horizontal (node, before, after, tileSize) {
 		var last_w = this.canvas.width - tileSize;
@@ -127,7 +128,7 @@ class Segment {
 			(node.x == last_w && after.x == node.x - tileSize && !before.x) ||
 			(after.x == last_w && before.x == node.x + tileSize && !node.x)
 		);
-	};
+	}
 
 	vertical (node, before, after, tileSize) {
 		var last_h = this.canvas.height - tileSize;
@@ -140,7 +141,7 @@ class Segment {
 			(node.y == last_h && after.y == node.y - tileSize && !before.y) ||
 			(after.y == last_h && before.y == node.y + tileSize && !node.y)
 		);
-	};
+	}
 
 	tail (node, beforeNode) {
 		var Sprites = this.sprites.tail, tileSize = Sprites.up.tileSize, last_w = this.canvas.width - tileSize, last_h = this.canvas.height - tileSize;
@@ -156,9 +157,9 @@ class Segment {
 		} else
 		if ((beforeNode.y == node.y + tileSize || !beforeNode.y && node.y == last_h) && beforeNode.x == node.x) {
 			Sprites.down.draw(node.x, node.y, tileSize, tileSize);
-		};
-	};
-};
+		}
+	}
+}
 
 
 
