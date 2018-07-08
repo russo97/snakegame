@@ -100,6 +100,11 @@
 	}
 
 
+	function map (value, min1, max1, min2, max2) {
+		return min2 + (max2 - min2) * ((value - min2) / (max1 - min1));
+	}
+
+
 	function clearCanvas (newColor = 'white') {
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		drawRect(0, 0, canvas.width, canvas.height, newColor);
@@ -112,12 +117,12 @@
 	}
 
 
-	function drawArc (x, y, r, color) {
+	function drawArc (x, y, r, init = 0, end = Math.PI * 2, color) {
 		ctx.beginPath();
-		ctx.lineWidth = 3;
+		ctx.lineWidth = 1;
 		ctx.strokeStyle = color;
-		ctx.arc(x, y, r, 0, Math.PI * 2);
-		ctx.closePath();
+		ctx.arc(x, y, r, init, end);
+		// ctx.closePath();
 		ctx.stroke();
 	}
 
