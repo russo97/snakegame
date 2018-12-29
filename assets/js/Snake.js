@@ -15,12 +15,22 @@
 
 		changeDirection (keyCode) {
 			var _body = this.body, head = _body[0], neck = _body[1];
+			
+			var UP    = 'up',
+			    LEFT  = 'left',
+			    RIGHT = 'right',
+			    DOWN  = 'down';
 
 			let newDirection = {
-				38: 'up',
-				37: 'left',
-				40: 'down',
-				39: 'right'
+				38: UP,
+				87: UP,
+				65: LEFT,
+				37: LEFT,
+				39: RIGHT,
+				68: RIGHT,
+				40: DOWN,
+				83: DOWN
+				
 			}[keyCode], currentDirection = this.direction;
 
 			switch (keyCode) {
