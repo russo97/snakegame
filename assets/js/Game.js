@@ -210,10 +210,14 @@
 				break;
 			case 32:
 				return !game.running && !game.paused && game.setGameState();
-			case 37:
-			case 38:
-			case 39:
-			case 40:
+			case 37: // left arrow
+			case 38: // up arrow
+			case 39: // right arrow
+			case 40: // down arrow
+			case 65: // A letter
+			case 87: // W letter
+			case 83: // S letter
+			case 68: // D letter
 				return (!game.over && !game.paused && game.running) && snake.changeDirection(keyCode);
 		}
 	}
