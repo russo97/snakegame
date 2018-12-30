@@ -14,7 +14,6 @@
 		}
 
 		changeDirection (keyCode) {
-			debugger;
 			var _body = this.body, head = _body[0], neck = _body[1];
 			
 			var UP    = 'up',
