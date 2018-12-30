@@ -36,21 +36,25 @@
 
 			switch (keyCode) {
 				case 38:
+				case 87:
 					if (head.x !== neck.x && currentDirection != DOWN) {
 						this.direction = newDirection;
 					}
 					break;
 				case 37:
+				case 65:
 					if (head.y !== neck.y && currentDirection != RIGHT) {
 						this.direction = newDirection;
 					}
 					break;
 				case 40:
+				case 83:
 					if (head.x !== neck.x && currentDirection != UP) {
 						this.direction = newDirection;
 					}
 					break;
 				case 39:
+				case 68:
 					if (head.y !== neck.y && currentDirection != LEFT) {
 						this.direction = newDirection;
 					}
