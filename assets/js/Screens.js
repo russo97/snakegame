@@ -54,7 +54,7 @@
 			ctx.fillText('último recorde', wCanvas * .5, hCanvas * .76);
 
 			ctx.font = '24pt Reenie Beanie';
-			ctx.fillText(`${record.name}`, wCanvas * .5, hCanvas * .84);
+			ctx.fillText(`${record.name} fez ${record.score} pontos`, wCanvas * .5, hCanvas * .84);
 		};
 
 		pause () {

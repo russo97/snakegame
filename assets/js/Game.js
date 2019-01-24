@@ -92,6 +92,26 @@
 		food  = new Food(
 			Sprites.food, snake
 		);
+
+		let url = "http://mineapps.000webhostapp.com/get_data.php?gamename=Snake Game", record;
+
+		let xhr = new XMLHttpRequest();
+
+		xhr.open('GET', url, 1);
+
+		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+		xhr.onreadystatechange = function () {
+			if (xhr.status === 200) {
+				try {
+					let returned = JSON.parse(xhr.responseText);
+
+					game.record.record = JSON.stringify({'name':returned.playername,'score':returned.playerscore}) || localStorage.getItem('snakeRecord');
+				} catch (e) {}
+			}
+		}
+
+		xhr.send();
 	}
 
 
