@@ -6,7 +6,7 @@
 			this.showTime      = 0;
 			this.Sprites       = Sprites;
 			this.canvasContext = canvasContext;
-		};
+		}
 
 		splash () {
 			var ctx     = this.canvasContext,
@@ -19,17 +19,15 @@
 
 			Sprites.splash.draw((wCanvas - wImage) * .5, (hCanvas - hImage) * .5, wImage, hImage);
 
-			this.showTime++;
-
-			if (this.showTime > 10) {
+			if (++this.showTime > 10) {
 				return this.showTime = this.showTime > 20 ? 0 : this.showTime;
-			};
+			}
 
 			ctx.fillStyle = '#000';
 			ctx.textAlign = 'center';
 			ctx.font = '20pt Reenie Beanie';
 			ctx.fillText('Clique ou pressione ESPACE para iniciar', wCanvas * .5, hCanvas * .78);
-		};
+		}
 
 		noRecord () {
 			var ctx     = this.canvasContext,
@@ -40,7 +38,7 @@
 			ctx.fillStyle = '#fff';
 			ctx.font = '18pt Reenie Beanie';
 			ctx.fillText(' Nenhum recorde anterior', wCanvas * .5, hCanvas * .76);
-		};
+		}
 
 		drawRecord (record) {
 			var ctx     = this.canvasContext,
@@ -55,7 +53,7 @@
 
 			ctx.font = '24pt Reenie Beanie';
 			ctx.fillText(`${record.name} fez ${record.score} pontos`, wCanvas * .5, hCanvas * .84);
-		};
+		}
 
 		pause () {
 			var ctx = this.canvasContext, Sprites = this.Sprites, canvas = ctx.canvas;
@@ -65,7 +63,7 @@
 			ctx.fillStyle = '#fff';
 			ctx.font = '10pt Consolas';
 			ctx.fillText('Pressione P para continuar', canvas.width * .5, canvas.height * .97);
-		};
+		}
 
 		over () {
 			var ctx     = this.canvasContext,
@@ -77,7 +75,5 @@
 				hImage  = Sprites.over.height;
 
 			Sprites.over.draw((wCanvas - wImage) * .5, (hCanvas - hImage) * .5, wImage, hImage);
-		};
-	};
-
-
+		}
+	}

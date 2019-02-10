@@ -106,8 +106,12 @@
 				try {
 					let returned = JSON.parse(xhr.responseText);
 
-					game.record.record = JSON.stringify({'name':returned.playername,'score':returned.playerscore}) || localStorage.getItem('snakeRecord');
-				} catch (e) {}
+					game.record.record = JSON.stringify({'name':returned.playername,'score':returned.playerscore});
+
+					localStorage.setItem('snakeRecord', game.record.record);
+				} catch (e) {
+					game.record.record = localStorage.getItem('snakeRecord') || undefined;
+				}
 			}
 		}
 

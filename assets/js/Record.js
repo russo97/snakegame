@@ -7,11 +7,13 @@
 			this.newRecord = {
 				added: 0
 			};
-		};
+		}
 
 		get hasAnRecord () {
+			this.record = this.record || localStorage.getItem('snakeRecord');
+
 			return this.record;
-		};
+		}
 
 		getExistsRecord () {}
 
@@ -19,11 +21,11 @@
 			this.record = record;
 
 			localStorage.setItem('snakeRecord', record);
-		};
+		}
 
 		overcame (score) {
 			return !this.record || score > JSON.parse(this.record).score;
-		};
+		}
 
 		setNewRecord (name, score) {
 			var storage = { name: name, score: score };
@@ -45,8 +47,5 @@
 			}
 
 			xhr.send();
-		};
-	};
-
-
-
+		}
+	}

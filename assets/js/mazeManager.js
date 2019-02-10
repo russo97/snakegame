@@ -12,7 +12,6 @@
 		}
 
 		wallExist (row) {
-			// row should be an array
 			return /^\d/g.test(row.join(''));
 		}
 
@@ -42,7 +41,6 @@
 			var Sprites     = this.Sprites,
 				currentMaze = this.currentMaze,
 				tileSize    = Sprites.white.tileSize,
-				// mazeRunning = mazeManager.getInnerRow.call(this),
 				delimiters  = this.mazesDelimiters[this.getStage];
 
 			for (var i = delimiters.begin, len1 = delimiters.end; i < len1; i++) {

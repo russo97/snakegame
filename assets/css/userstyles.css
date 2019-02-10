@@ -11,9 +11,12 @@ html, body {
 }
 
 body {
-	background-color: gainsboro;
-	position: relative;
 	display: flex;
+	position: relative;
+	flex-flow: row wrap;
+	align-items: center;
+	justify-content: center;
+	background-color: gainsboro;
 }
 
 #container {
@@ -23,6 +26,6 @@ body {
 }
 
 canvas {
-	box-shadow: 0 0 4px #aaa, 0 4px 4px #aaa;
 	/*display: none;*/
+	box-shadow: 0 0 4px #aaa, 0 4px 4px #aaa;
 }
