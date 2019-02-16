@@ -1,6 +1,3 @@
-
-
-
 	class Screens {
 		constructor (Sprites, canvasContext) {
 			this.showTime      = 0;
@@ -45,34 +42,32 @@
 				canvas  = ctx.canvas,
 				Sprites = this.Sprites,
 				wCanvas = canvas.width,
-				hCanvas = canvas.height;
+				hCanvas = canvas.height,
+				{ name, score } = record;
 
 			ctx.fillStyle = '#fff';
-			ctx.font = '18pt Contrail One';
-			ctx.fillText('último recorde', wCanvas * .5, hCanvas * .76);
-
 			ctx.font = '24pt Reenie Beanie';
-			ctx.fillText(`${record.name} fez ${record.score} pontos`, wCanvas * .5, hCanvas * .84);
+			ctx.fillText('ÚLTIMO RECORD', wCanvas * .5, hCanvas * .76);
+
+			ctx.fillText(`${name} fez ${score} pontos`, wCanvas * .5, hCanvas * .84);
 		}
 
 		pause () {
-			var ctx = this.canvasContext, Sprites = this.Sprites, canvas = ctx.canvas;
+			var ctx = this.canvasContext, Sprites = this.Sprites, { width, height } = ctx.canvas;
 
-			Sprites.pause.draw(0, 0, canvas.width, canvas.height);
+			Sprites.pause.draw(0, 0, width, height);
 
 			ctx.fillStyle = '#fff';
 			ctx.font = '10pt Consolas';
-			ctx.fillText('Pressione P para continuar', canvas.width * .5, canvas.height * .97);
+			ctx.fillText('Pressione P para continuar', width * .5, height * .97);
 		}
 
 		over () {
 			var ctx     = this.canvasContext,
 				canvas  = ctx.canvas,
 				Sprites = this.Sprites,
-				wCanvas = canvas.width,
-				hCanvas = canvas.height,
-				wImage  = Sprites.over.width,
-				hImage  = Sprites.over.height;
+				{ width:wCanvas, height:hCanvas } = canvas,
+				{ width:wImage, height: hImage } = Sprites.over;
 
 			Sprites.over.draw((wCanvas - wImage) * .5, (hCanvas - hImage) * .5, wImage, hImage);
 		}

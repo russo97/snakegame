@@ -34,6 +34,7 @@
 			switch (this.current) {
 				case 'splash':
 					this.current = 'running';
+					break;
 			}
 		}
 

@@ -1,12 +1,16 @@
 (function () {
 
+	var WIDTH, HEIGHT;
+
+	var framesPerSecond = 0, grad;
+
 	var canvas, ctx, tileSize = 10, Sprites;
 
 	var container = document.getElementById('container');
 
 	var snake, food, maze, game, screens, maze;
 
-	var dropCounter = 0, dropInterval = 100, lastUpdate = 0, delta;
+	var dropCounter = 0, dropInterval = .103, lastUpdate = 0, delta;
 
 
 	function createCanvas (w, h) {
@@ -15,11 +19,15 @@
 		canvas.height = h;
 		canvas.textContent = 'navegador sem suporte';
 
+		WIDTH = w, HEIGHT = h;
+
 		container.appendChild(canvas);
 
 		ctx = canvas.getContext('2d');
 
 		[Sprite.prototype.canvas, Sprite.prototype.canvasContext, Sprite.prototype.tileSize] = [canvas, ctx, tileSize];
+
+		grad = verticalGradient(0, 0, 0, HEIGHT, { beg: 'rgba(0, 0, 0, .2)', end: 'rgba(0, 0, 0, .8)' });
 
 		setInputs();
 
@@ -130,8 +138,10 @@
 
 
 	function clearCanvas (newColor = 'white') {
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
-		drawRect(0, 0, canvas.width, canvas.height, newColor);
+		let positions = [0, 0, WIDTH, HEIGHT];
+
+		ctx.clearRect(...positions);
+		drawRect(...positions, newColor);
 	}
 
 
@@ -162,7 +172,7 @@
 
 
 	function fillBackground (scheme = 'white') {
-		drawRect(0, 0, canvas.width, canvas.height, scheme);
+		drawRect(0, 0, WIDTH, HEIGHT, scheme);
 	}
 
 
@@ -183,17 +193,22 @@
 		game.running ? [maze, food, snake, game.score].forEach(itens => itens.draw()) : game.screens.splash();
 
 		if (game.paused || game.over) {
-			var grad = verticalGradient(0, 0, 0, canvas.height, { beg: 'rgba(0, 0, 0, .2)', end: 'rgba(0, 0, 0, .8)' });
-
-			drawRect(0, 0, canvas.width, canvas.height, grad);
+			drawRect(0, 0, WIDTH, HEIGHT, grad);
 
 			game.draw();
 		}
+
+		game.running && showFPS();
 	}
 
+	function showFPS () {
+		ctx.font = '10pt Open Sans';
+		let fpsString = String(parseInt(framesPerSecond)) + 'ms';
+		ctx.fillText(fpsString, WIDTH * .95, HEIGHT * .98);
+	}
 
 	function update (time = 0) {
-		delta = time - lastUpdate, lastUpdate = time;
+		delta = (Date.now() - lastUpdate) / 1000, lastUpdate = Date.now();
 		
 		dropCounter += delta;
 		if (dropCounter >= dropInterval) {
@@ -207,6 +222,8 @@
 			dropCounter = 0;
 		}
 
+		framesPerSecond = 1 / delta;
+
 		requestAnimationFrame(update, canvas);
 	}
 
@@ -217,32 +234,23 @@
 
 
 	function clickCanvas (event) {
-		if (game.over) {
-			return resetGame();
-		}
-
-		game.setGameState();
+		return game.over ? resetGame() : game.setGameState();
 	}
 
 
 	function keydownCanvas (event) {
-		var keyCode = event.keyCode;
+		var { key, keyCode } = event;
+
+		if ('wasd'.indexOf(key) !== -1 || key.indexOf('Arrow') !== -1) {
+			return (!game.over && !game.paused && game.running) && snake.changeDirection(keyCode);
+		}
 
 		switch (keyCode) {
-			case 80: // P key
+			case 80: // P
 				game.togglePause();
 				break;
-			case 32:
+			case 32: // ESPACE
 				return !game.running && !game.paused && game.setGameState();
-			case 37: // left arrow
-			case 38: // up arrow
-			case 39: // right arrow
-			case 40: // down arrow
-			case 65: // A letter
-			case 87: // W letter
-			case 83: // S letter
-			case 68: // D letter
-				return (!game.over && !game.paused && game.running) && snake.changeDirection(keyCode);
 		}
 	}
 
